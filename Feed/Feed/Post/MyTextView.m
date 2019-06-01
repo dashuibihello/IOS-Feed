@@ -23,7 +23,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        [self step];
+        [self setup];
     }
     return self;
 }
@@ -37,10 +37,10 @@
 - (void)awakeFromNib{
     [super awakeFromNib];
     
-    [self step];
+    [self setup];
 }
 
-- (void)step{
+- (void)setup{
     [self addSubview:self.placeholderTextView];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.placeholderTextView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];

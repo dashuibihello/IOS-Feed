@@ -49,6 +49,7 @@
 		A0FA6EAA228094A100C70080 /* RecommendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FA6EA9228094A100C70080 /* RecommendViewController.m */; };
 		A0FA6EAD228094C600C70080 /* PEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FA6EAC228094C600C70080 /* PEViewController.m */; };
 		A0FA6EB0228094DC00C70080 /* TechViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FA6EAF228094DC00C70080 /* TechViewController.m */; };
+		A5A55CC1229EE7CB00C9DF00 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5A55CC0229EE7CB00C9DF00 /* SearchViewController.m */; };
 		A5C6217D2296CE710029CA6A /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C621772296CE710029CA6A /* MyTextView.m */; };
 		A5C6217E2296CE710029CA6A /* MyToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C6217A2296CE710029CA6A /* MyToolBar.m */; };
 		A5C6217F2296CE710029CA6A /* AddPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C6217B2296CE710029CA6A /* AddPhoto.m */; };
@@ -150,6 +151,8 @@
 		A0FA6EAC228094C600C70080 /* PEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PEViewController.m; sourceTree = "<group>"; };
 		A0FA6EAE228094DC00C70080 /* TechViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechViewController.h; sourceTree = "<group>"; };
 		A0FA6EAF228094DC00C70080 /* TechViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechViewController.m; sourceTree = "<group>"; };
+		A5A55CC0229EE7CB00C9DF00 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		A5A55CC2229EE7E900C9DF00 /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		A5C621752296CE710029CA6A /* MyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTextView.h; sourceTree = "<group>"; };
 		A5C621772296CE710029CA6A /* MyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTextView.m; sourceTree = "<group>"; };
 		A5C621792296CE710029CA6A /* AddPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPhoto.h; sourceTree = "<group>"; };
@@ -267,6 +270,7 @@
 		A03387DA22804F4A0020858C /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				A5A55CBF229EE74900C9DF00 /* Search */,
 				21E3C52A22944BD900E762FC /* Model */,
 				A073E64322818969003CA352 /* LogIn */,
 				A0FA6EA02280782A00C70080 /* Home */,
@@ -381,18 +385,27 @@
 			path = Scroll;
 			sourceTree = "<group>";
 		};
+		A5A55CBF229EE74900C9DF00 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				A5A55CC0229EE7CB00C9DF00 /* SearchViewController.m */,
+				A5A55CC2229EE7E900C9DF00 /* SearchViewController.h */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		A5C6216F2296C46B0029CA6A /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				A5C621802296CF090029CA6A /* Resource */,
-				A5C621792296CE710029CA6A /* AddPhoto.h */,
 				A5C6217B2296CE710029CA6A /* AddPhoto.m */,
-				A5C621752296CE710029CA6A /* MyTextView.h */,
+				A5C621792296CE710029CA6A /* AddPhoto.h */,
 				A5C621772296CE710029CA6A /* MyTextView.m */,
+				A5C621752296CE710029CA6A /* MyTextView.h */,
 				A5C6217A2296CE710029CA6A /* MyToolBar.m */,
 				A5C6218B2296DAB50029CA6A /* MyToolBar.h */,
-				A5C621902296DCAD0029CA6A /* PublishViewController.h */,
 				A5C6218F2296DCAD0029CA6A /* PublishViewController.m */,
+				A5C621902296DCAD0029CA6A /* PublishViewController.h */,
+				A5C621802296CF090029CA6A /* Resource */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -658,6 +671,7 @@
 				A03AE038228BB0BF00D34188 /* InfoCell.m in Sources */,
 				A5C6217D2296CE710029CA6A /* MyTextView.m in Sources */,
 				A09890D12280959D0027ACCA /* MilitaryViewController.m in Sources */,
+				A5A55CC1229EE7CB00C9DF00 /* SearchViewController.m in Sources */,
 				A0C7E7B1228C33D70036EE8E /* PlaceModel.m in Sources */,
 				A073E64222818958003CA352 /* SignUpViewController.m in Sources */,
 				A0C7E7AE228C311F0036EE8E /* PlacePicker.m in Sources */,

@@ -123,7 +123,6 @@
         CGFloat btnY = (i / MaxColumn) * (marginY + btnH) + marginY;
         btn.frame = CGRectMake(btnX, btnY, btnW, btnH);
     }
-    
 }
 
 #pragma mark - UIImagePickerController 代理方法

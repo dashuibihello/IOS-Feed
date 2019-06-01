@@ -18,6 +18,8 @@
 #import "PublishViewController.h"
 #import <CMPopTipView.h>
 
+#import "Search/SearchViewController.h"
+
 #define NavAndStatusHight  self.navigationController.navigationBar.frame.size.height+[[UIApplication sharedApplication] statusBarFrame].size.height
 
 @interface HomeViewController () <CMPopTipViewDelegate,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource>
@@ -29,7 +31,10 @@
 @property (nonatomic,strong) id                      currentPopTipViewTarget;  //!< 当前的按钮
 @property (nonatomic,strong) UITableView          *tableView;
 @property (nonatomic,strong) NSMutableArray       *tableDataSource;
-@property (nonatomic,strong)UIBarButtonItem          *rightButton;
+@property (nonatomic,strong) UIBarButtonItem          *rightButton;
+
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) SearchViewController *searchView;
 
 @end
 
@@ -50,10 +55,26 @@
     [self addChildViewController:scrollViewController];
     [self.view addSubview:scrollViewController.view];
     
+    
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    SearchViewController *temp = self.searchView;
+    if(self.searchView != nil) {
+        self.searchView = nil;
+    }
+
+    self.searchView = [[SearchViewController alloc] init];
+    self.searchView.recommend = temp.recommend;
+    self.searchView.history = temp.history;
     //右上角发布按钮
     [self initTableView];
     [self setup];
-    
+    [self setBarButtonItem];
 }
 
 #pragma mark - 右上角发布按钮
@@ -202,6 +223,71 @@
             initWithArray:@[@"发图文"]];
     }
     return _tableDataSource;
+}
+
+- (void)setBarButtonItem
+{
+    //隐藏导航栏上的返回按钮
+    [self.navigationItem setHidesBackButton:YES];
+    //用来放searchBar的View
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(5, 7, self.view.frame.size.width - 50, 30)];
+    //创建searchBar
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(titleView.frame), 30)];
+    //背景图片
+    searchBar.backgroundImage = [UIImage imageNamed:@"clearImage"];
+    [self setPlaceHolder:searchBar];
+    //代理
+    searchBar.delegate = (id)self;
+    //显示右侧取消按钮
+    searchBar.showsCancelButton = NO;
+    //光标颜色
+    searchBar.tintColor = [UIColor blueColor];
+    //拿到searchBar的输入框
+    UITextField *searchTextField = [searchBar valueForKey:@"_searchField"];
+    //字体大小
+    searchTextField.font = [UIFont systemFontOfSize:15];
+    //Placeholder颜色
+    [searchTextField setValue:[UIColor blackColor] forKeyPath:@"_placeholderLabel.textColor"];
+    //输入框背景颜色
+    searchTextField.backgroundColor = [UIColor colorWithRed:234/255.0 green:235/255.0 blue:237/255.0 alpha:1];
+
+    [titleView addSubview:searchBar];
+    self.searchBar = searchBar;
+    self.navigationItem.titleView = titleView;
+}
+
+-(void) setPlaceHolder:(UISearchBar *)searchBar
+{
+    NSString *orignal = self.searchView.recommend[0];
+    
+    //默认提示文字
+    int i = 1;
+    while(orignal.length < 30) {
+        orignal = [orignal stringByAppendingString:@"|"];
+        orignal = [orignal stringByAppendingString:self.searchView.recommend[i]];
+        i++;
+    }
+    
+    searchBar.placeholder = orignal;
+}
+
+#pragma mark --收起键盘
+// 滑动空白处隐藏键盘
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    UITextField *searchTextField = [self.searchBar valueForKey:@"_searchField"];
+    [searchTextField endEditing:YES];
+}
+
+// 点击空白处收键盘
+-(void)fingerTapped:(UITapGestureRecognizer *)gestureRecognizer {
+    UITextField *searchTextField = [self.searchBar valueForKey:@"_searchField"];
+    [searchTextField endEditing:YES];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    self.searchView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:self.searchView animated:NO];
+    return false;
 }
 
 @end

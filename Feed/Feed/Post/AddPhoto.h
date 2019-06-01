@@ -19,7 +19,7 @@
 
 @interface AddPhoto : UIView
 
-@property (nonatomic, assign) id <PhotoChangedDelegate> delegate;
+@property (nonatomic, weak) id <PhotoChangedDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *photos;
 
 @end

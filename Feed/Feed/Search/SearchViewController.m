@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign)BOOL isBeginDelete;
 @property (nonatomic, assign)BOOL isShowAllHistory;
+@property (nonatomic, assign)BOOL isShowRecommend;
 
 @end
 
@@ -104,6 +105,7 @@
     [self.searchBar becomeFirstResponder];
     self.isBeginDelete = FALSE;
     self.isShowAllHistory = FALSE;
+    self.isShowRecommend = TRUE;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -159,7 +161,13 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if(section == 0) {
-        return 4;
+        if(self.isShowRecommend == TRUE) {
+            return 4;
+        }
+        else {
+            return 0;
+        }
+        
     }
     else if(section == 1) {
         if(self.history.count <= 6 || self.isShowAllHistory == TRUE || self.isBeginDelete == TRUE) {
@@ -171,7 +179,13 @@
         
     }
     else {
-        return self.recommend.count - 4;
+        if(self.isShowRecommend == TRUE) {
+            return self.recommend.count - 4;
+        }
+        else {
+            return 0;
+        }
+        
     }
 }
 
@@ -275,13 +289,25 @@
 -(CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
     CGSize size;
-    if(section == 1 && self.history.count == 0) {
-        size = CGSizeMake(self.view.frame.size.width, 0);
+    if(section == 0) {
+        if(self.isShowRecommend == TRUE) {
+            size = CGSizeMake(self.view.frame.size.width, 10);
+        }
+        else {
+            size = CGSizeMake(self.view.frame.size.width, 0);
+        }
+    }
+    else if(section == 1) {
+        if(self.history.count == 0) {
+            size = CGSizeMake(self.view.frame.size.width, 0);
+        }
+        else {
+            size = CGSizeMake(self.view.frame.size.width, 10);
+        }        
     }
     else {
-        size = CGSizeMake(self.view.frame.size.width, 10);
+        size = CGSizeMake(self.view.frame.size.width, 40);
     }
-    
     return size;
     
 }
@@ -373,6 +399,24 @@
             horizonLine.alpha = 0.35;
             [footerView addSubview:horizonLine];
         }
+        else {
+            UIButton *buttonShowRecommend = [UIButton buttonWithType:UIButtonTypeCustom];
+            buttonShowRecommend.frame = CGRectMake(self.view.frame.size.width / 2 - 100, 10, 200, 30);
+            if(self.isShowRecommend == TRUE) {
+                [buttonShowRecommend setTitle:@"隐藏推荐词" forState:UIControlStateNormal];
+            }
+            else {
+                [buttonShowRecommend setTitle:@"查看全部推荐词" forState:UIControlStateNormal];
+            }
+            buttonShowRecommend.titleLabel.font = [UIFont systemFontOfSize:13];
+            [buttonShowRecommend setTitleColor:UIColor.lightGrayColor forState:UIControlStateNormal];
+            buttonShowRecommend.titleLabel.alpha = 0.35;
+            buttonShowRecommend.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+            [buttonShowRecommend setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+            [buttonShowRecommend setTitleColor:UIColor.orangeColor forState:UIControlStateHighlighted];
+            [buttonShowRecommend addTarget:self action:@selector(showRecommend:) forControlEvents:UIControlEventTouchUpInside];
+            [footerView addSubview:buttonShowRecommend];
+        }
         reusableView = footerView;
     }
 
@@ -395,6 +439,16 @@
     }
     else {
         self.isShowAllHistory = FALSE;
+    }
+    [self.collectionView reloadData];
+}
+
+-(void)showRecommend:(UIButton *)btn {
+    if(self.isShowRecommend == FALSE) {
+        self.isShowRecommend = TRUE;
+    }
+    else {
+        self.isShowRecommend = FALSE;
     }
     [self.collectionView reloadData];
 }

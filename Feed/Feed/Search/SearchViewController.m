@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign)BOOL isBeginDelete;
+@property (nonatomic, assign)BOOL isShowAllHistory;
 
 @end
 
@@ -102,6 +103,7 @@
     [super viewDidAppear:animated];
     [self.searchBar becomeFirstResponder];
     self.isBeginDelete = FALSE;
+    self.isShowAllHistory = FALSE;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -160,7 +162,13 @@
         return 4;
     }
     else if(section == 1) {
-        return self.history.count;
+        if(self.history.count <= 6 || self.isShowAllHistory == TRUE || self.isBeginDelete == TRUE) {
+            return self.history.count;
+        }
+        else {
+            return 6;
+        }
+        
     }
     else {
         return self.recommend.count - 4;
@@ -302,6 +310,18 @@
         [buttonHistory setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
         [buttonHistory setTitleColor:UIColor.orangeColor forState:UIControlStateHighlighted];
         
+        if(self.history.count > 6 && self.isBeginDelete == FALSE) {
+            buttonHistory.frame = CGRectMake(10, 10, 150, 30);
+            if(self.isShowAllHistory == FALSE) {
+                [buttonHistory setTitle:@"查看所有历史记录" forState:UIControlStateNormal];
+            }
+            else {
+                [buttonHistory setTitle:@"取消查看所有历史记录" forState:UIControlStateNormal];
+            }
+            [buttonHistory addTarget:self action:@selector(showAllHistory:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        
         [headerView addSubview:buttonHistory];
         
         UIButton *buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -314,18 +334,16 @@
             buttonDeleteAll.frame = CGRectMake(collectionView.frame.size.width - 160, 10, 100, 30);
             [buttonDeleteAll setTitle:@"删除所有" forState:UIControlStateNormal];
             buttonDeleteAll.titleLabel.font = [UIFont systemFontOfSize:13];
-            //buttonDeleteAll.backgroundColor = [UIColor blueColor];
             [buttonDeleteAll setTitleColor:UIColor.lightGrayColor forState:UIControlStateNormal];
             buttonDeleteAll.titleLabel.alpha = 0.35;
             buttonDeleteAll.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
             [buttonDeleteAll setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
             [buttonDeleteAll setTitleColor:UIColor.orangeColor forState:UIControlStateHighlighted];
-             [buttonDeleteAll addTarget:self action:@selector(confirmDelete:) forControlEvents:UIControlEventTouchUpInside];
+            [buttonDeleteAll addTarget:self action:@selector(confirmDelete:) forControlEvents:UIControlEventTouchUpInside];
             [headerView addSubview:buttonDeleteAll];
             
             [buttonDelete setTitle:@"完成" forState:UIControlStateNormal];
             buttonDelete.frame = CGRectMake(collectionView.frame.size.width - 60, 10, 50, 30);
-            //buttonDelete.backgroundColor = [UIColor greenColor];
         }
         
         buttonDelete.titleLabel.font = [UIFont systemFontOfSize:13];
@@ -355,7 +373,6 @@
             horizonLine.alpha = 0.35;
             [footerView addSubview:horizonLine];
         }
-        
         reusableView = footerView;
     }
 
@@ -368,6 +385,16 @@
     }
     else {
         self.isBeginDelete = FALSE;
+    }
+    [self.collectionView reloadData];
+}
+
+-(void)showAllHistory:(UIButton *)btn {
+    if(self.isShowAllHistory == FALSE) {
+        self.isShowAllHistory = TRUE;
+    }
+    else {
+        self.isShowAllHistory = FALSE;
     }
     [self.collectionView reloadData];
 }
